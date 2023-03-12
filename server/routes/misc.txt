@@ -1,0 +1,32 @@
+<!-- <div class="box">
+        <h1>ToDo List</h1>
+        <hr>
+        <% for (var i =0; i < newListItem.length ;  i++ ) { %>
+            <%if (newListItem[i].completed==true) { %>
+                <form action="/" method="post">
+                    <div class="item">
+                        <div class="round">
+                            <input type="checkbox" class="larger" name="checkbox" value="<%=newListItem[i]._id%>" onchange="this.form.submit()" id="checkbox" checked>
+                            <label for="checkbox" class="strike"> <%= newListItem[i].name %> </label>
+                            <!-- <button name="btndelete" value="<%=newListItem[i]._id%>">Delete</button> -->
+                        </div>
+                        <!-- <p class="item"> <%= newListItem[i].name %> </p> -->
+                          <br>
+                  </div> 
+              </form>    
+              <% } %>
+              <%if (newListItem[i].completed==false) { %>
+          <!-- <form action="/checked" method="post"> -->
+              <div class="item">
+                  <div class="round">
+                      <input type="checkbox" class="larger" name="checkbox" value="<%=newListItem[i]._id%>" onchange="this.form.submit()" id="checkbox">
+                      <label for="checkbox" class="notstriked"> <%= newListItem[i].name %> </label>
+                      <!-- <button name="btndelete" value="<%=newListItem[i]._id%>">Delete</button> -->
+                  </div>
+                      <br>
+              </div> 
+          <!-- </form> -->
+          <% } %>
+          <% } %>
+       -->
+

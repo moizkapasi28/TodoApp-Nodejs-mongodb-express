@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <!-- <link rel="stylesheet" href="css/styels.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body> 
+    <div class="container">
+        <ul id="result">
+
+        </ul> 
+        <form id="submitData" > 
+            <span id="error" style="display: none">Input Filed is empty</span>
+            <input type="text" name="task" id="input" class="task" placeholder="Add Task">
+            <button type="submit" class="btnadd" value="Submit form">Add</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            getData();
+            function getData(){
+                $('#result').html("")
+                $.ajax({
+                    url:'/task/gettask',
+                    method:'get',
+                    dataType:'json',
+                }).done(function(data){
+                    $.each(data,function(i,todo){
+                        if(todo.completed==true){
+                            $('#result').append("<li style='list-style-type:none'>"+"<input type='checkbox' class='check' name='checkbox' value="+todo._id+" id='check' checked>"+"<label for='checkbox' class='strike' style='text-decoration:line-through' >"+todo.task+"</label>"+"<button class='delete' value="+todo._id+">Delete</button>"+"</li>"+"<br>");
+                        }else{
+                            $('#result').append("<li style='list-style-type:none'>"+"<input type='checkbox' class='check' name='checkbox' value="+todo._id+" id='check'>"+"<label for='checkbox' class='strike'>"+todo.task+"</label>"+"<button class='delete' value="+todo._id+">Delete</button>"+"</li>"+"<br>");
+                        }
+                    })
+                })
+            }
+            $('.btnadd').click(function(e){
+                e.preventDefault();
+                var task = $(".task").val();
+
+                if(task==""){
+                    $('#error').css('display','block')
+                    setTimeout(()=>{
+                        $('#error').css('display','none')
+                    },2000)
+                    return 
+                } else{
+                    $.ajax({
+                        url:'/task/add',
+                        method:'post',
+                        dataType:'json',
+                        data:{'task':task},
+                    })
+                    getData();
+                    $(".task").val("");
+                }
+            })
+            $(document).on('change','.check',function(){
+                if(this.checked){
+                    var id = $(this).parent().find('.check').val();
+                    console.log(id)
+                    $.ajax({
+                    url:'/task/update',
+                    method:'put',
+                    dataType:'json',
+                    data:{"id":id},
+                })
+                getData();
+                }else{
+                    var id = $(this).parent().find('.check').val();
+                    console.log(id)
+                    $.ajax({
+                    url:'/task/uncheck',
+                    method:'put',
+                    dataType:'json',
+                    data:{"id":id},})
+                getData();
+            }
+})
+            $(document).on('click','.delete',function(){
+                var id = $(this).parent().find('.delete').val();
+                $.ajax({
+                    url:'/task/delete',
+                    method:'delete',
+                    dataType:'json',
+                    data:{"id":id}
+                })
+                getData();
+            })
+        })
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <script type="text/javascript">
+        let newListItem = []
+        const form = document.querySelector('#submitData')
+        const input = document.querySelector('#submitData input')
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const task = {
+                name: input.value
+            }
+            fetch('/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(task)
+            })
+            .then(r=>r.json()).then(d=> {
+                console.log(d)
+                newListItem = [...newListItem,d]
+            })
+        })
+    </script> -->
